@@ -9,6 +9,7 @@ using AutoMapper;
 using ModelClasses.Entities.Testing;
 using ModelClasses.Entities.TestParts;
 using MoreLinq;
+using Newtonsoft.Json;
 using QuizApp.ViewModel;
 using QuizApp.ViewModel.Managing;
 using QuizApp.ViewModel.Mapping;

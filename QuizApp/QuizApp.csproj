@@ -306,6 +306,7 @@
     <Content Include="Content\ngDialog-theme-default.min.css" />
     <Content Include="Content\ngDialog.min.css" />
     <Content Include="Content\quizStyles.css" />
+    <Content Include="Content\TestManagment.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -344,6 +345,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Site\testManagment.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -361,6 +363,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_QuizLayout.cshtml" />
     <Content Include="Views\Admin\ResultManagement.cshtml" />
+    <Content Include="Views\Admin\TestManagement.cshtml" />
+    <Content Include="Views\Admin\TestingUrlManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

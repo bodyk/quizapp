@@ -36,7 +36,7 @@ namespace QuizApp.Controllers
 
         public ActionResult Index()
         {
-            return View("ResultManagement");
+            return View("TestManagement");
         }
 
         public ActionResult TestManagement()
@@ -74,7 +74,7 @@ namespace QuizApp.Controllers
         [HttpGet]
         public JsonResult GetAllTestingResults()
         {
-            var allResults =
+           var allResults =
                 _getInfoService.GetAllTestingResults()
                     .Select(r => _mapper.Map<TestingResultViewModel>(r))
                     .ToList();

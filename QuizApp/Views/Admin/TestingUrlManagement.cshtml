@@ -1,14 +1,15 @@
-﻿@model string
-
+﻿
 @{
-    ViewBag.Title = "ResultManagement";
+    ViewBag.Title = "TestingUrlManagement";
 }
+
+<h2>TestingUrlManagement</h2>
 
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            var actionUrl = '@Url.Action("GetAllTestingResults")';
+            var actionUrl = '@Url.Action("GetAllTestingUrls")';
             $.getJSON(actionUrl, processData);
         });
 
@@ -17,5 +18,3 @@
         }
     </script>
 }
-
-<h2>ResultManagement</h2>

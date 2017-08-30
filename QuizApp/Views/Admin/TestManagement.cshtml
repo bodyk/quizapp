@@ -1,0 +1,165 @@
+﻿@model QuizApp.ViewModel.Managing.TestViewModel
+
+@{
+    ViewBag.Title = "TestManagement";
+}
+
+@Styles.Render("~/Content/TestManagment.css")
+
+<button type="button" class="btn btn-primary" id="addTest">Add new test</button>
+
+<div class="formContainer">
+    @using (Html.BeginForm("CreateTest", "Apilike", FormMethod.Post))
+    {
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">@Html.LabelFor(model => model.Name)</span>
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter test name here..." })
+                <span class="input-group-addon">@Html.ValidationMessageFor(model => model.Name)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                @Html.TextAreaFor(m => m.Description, new
+                {
+                    @class = "form-control", placeholder = "Enter description here...",
+                    cols = 200
+                })
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="addQuestion">Add Question</button>
+        
+        <div id="qContainer">
+            
+        </div>
+
+        <div class="formButtons">
+            <input type="submit" value="Create" class="btn btn-success controlButton" />
+            <button type="button" class="btn btn-danger controlButton" id="cancelTestAdd">Cancel</button>
+        </div>
+        
+    }
+        </div>
+
+<div class="allTests list-group">
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function showHideForm() {
+            $(".formContainer").toggle(0);
+            $("#addTest").toggle(0);
+        }
+
+        $("#addTest").click(showHideForm);
+        $("#cancelTestAdd").click(showHideForm);
+
+        $("#addQuestion").click(function() {
+            var qContainer = $('#qContainer');
+
+            var testName = $('<h1 id="testName"></h1>');
+            singleTest.append(testName);
+        });
+
+
+        $(document).ready(function () {
+            var actionUrl = '@Url.Action("GetAllTests")';
+            $.getJSON(actionUrl, processTestInfo);
+        });
+
+        function processTestInfo(data) {
+            var testParent = $('.allTests');
+
+            data.forEach(function (entry) {
+                var singleTest = $('<div class="singleTest list-group-item"></div>');
+                testParent.append(singleTest);
+
+                var testName = $('<h1 id="testName"></h1>');
+                singleTest.append(testName);
+
+                var description = $('<p id="description"></p>');
+                singleTest.append(description);
+
+                var testTimeLimit = $('<h2 id="testTimeLimit">Test time limit: </h2>');
+                singleTest.append(testTimeLimit);
+
+                var questionTimeLimit = $('<h2 id="questionTimeLimit">Question time limit: </h2>');
+                singleTest.append(questionTimeLimit);
+
+                var questions = $('<div id="questions" class="list-group"></div>');
+                singleTest.append(questions);
+
+
+                $('#testName').append(data[0].Name);
+                $('#description').append(data[0].Description);
+                $('#testTimeLimit').append(data[0].TestTimeLimit);
+                $('#questionTimeLimit').append(data[0].QuestionTimeLimit);
+                var parent = $('#questions');
+
+                AddQuestions(parent, data[0].Questions);
+            });
+        }
+
+        function AddQuestions(questionParent, questions) {
+            console.log(questionParent);
+            console.log(questions);
+            var btnClassName = "questionButton";
+            questions.forEach(function (entry) {
+                var elem = $('<a href""></a>');
+                elem.addClass("singleQuestion");
+                elem.addClass("list-group-item");
+                elem.append('<span>' + entry.Instance + '</span>');
+
+                var btnParent = $('<div></div>');
+                btnParent.addClass('btnParent');
+
+                var btnEdit = $('<input type="button" value="Edit"/>');
+                btnEdit.addClass(btnClassName);
+                btnEdit.addClass('btnEdit');
+                btnEdit.attr("guid", entry.Guid);
+                btnParent.append(btnEdit);
+
+                var btnDelete = $('<input type="button" value="Delete"/>');
+                btnDelete.attr("guid", entry.Guid);
+                btnDelete.addClass(btnClassName);
+                btnDelete.addClass('btnDelete');
+                btnParent.append(btnDelete);
+
+                elem.append(btnParent);
+
+                questionParent.append(elem);
+            });
+
+            $(".btnEdit").click(function (e) {
+                console.log(e);
+            });
+
+            $(".btnDelete").click(function(e) {
+                console.log(e);
+                e.preventDefault(); // <------------------ stop default behaviour of button
+                var element = this;    
+                $.ajax({
+                    url: "/Apilike/RemoveQuestion",
+                    type: "POST",
+                    data: JSON.stringify({ 'questionGuid': e.target.getAttribute('guid')}),
+                    dataType: "json",
+                    traditional: true,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.status == "Success") {
+                            alert("Done");
+                            $(element).closest("form").submit(); //<------------ submit form
+                        } else {
+                            alert("Error occurs on the Database level!");
+                        }
+                    },
+                    error: function () {
+                        alert("An error has occured!!!");
+                    }
+                });
+            });
+        }
+    </script>
+}

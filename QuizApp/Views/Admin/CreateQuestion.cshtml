@@ -1,0 +1,67 @@
+﻿@model QuizApp.ViewModel.Managing.QuestionViewModel
+
+@{
+    ViewBag.Title = "CreateQuestion";
+}
+
+<h2>CreateQuestion</h2>
+
+@using (Html.BeginForm("CreateQuestion", "Apilike", new { testGuid = @ViewBag.testGuid }, FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>QuestionViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Instance, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Instance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Instance, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Hint, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Hint, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Hint, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div id="answersBlock">
+            <button type="submit" class="btn btn-primary" id="btnAddAnswer">Add answer</button>
+        
+            <div id="answers">
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "TestManagement")
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var answers = $('#answers');
+            $('#btnAddAnswer').click(function (e) {
+                console.log("Hello");
+                e.preventDefault();
+                $('<input type="checkbox" name="checks" value="true"/><br/>').appendTo(answers);
+                $('<input type="text" name="dynamicField" /><br/>').appendTo(answers);
+            });
+        });
+    </script>
+}

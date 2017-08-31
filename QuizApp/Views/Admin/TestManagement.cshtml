@@ -1,209 +1,71 @@
 ﻿@using QuizApp.ViewModel.Managing
-@model QuizApp.ViewModel.Managing.TestViewModel
+@model List<QuizApp.ViewModel.Managing.TestViewModel>
 
 @{
     ViewBag.Title = "TestManagement";
-
 }
 
 @Styles.Render("~/Content/TestManagment.css")
 
-<button type="button" class="btn btn-primary" id="addTest">Add new test</button>
-
-<div class="formContainer">
-    @using (Html.BeginForm("CreateTest", "Apilike", FormMethod.Post))
-    {
-        <div class="form-group">
-            <div class="input-group">
-                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter test name here..." })
-                <span class="input-group-addon">@Html.ValidationMessageFor(model => model.Name)</span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                @Html.TextAreaFor(m => m.Description, new
-           {
-               @class = "form-control",
-               placeholder = "Enter description here...",
-               cols = 200
-           })
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <span class="input-group-addon">Test</span>
-                            </div>
-                            <div class="col-lg-1">
-                                <input type="time" name="TestTimeLimit" placeholder="Time">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <span class="input-group-addon">Question</span>
-                            </div>
-                            <div class="col-lg-1">
-                                <input type="time" name="QuestionTimeLimit" placeholder="Time">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="formButtons">
-            <input type="submit" value="Create" class="btn btn-success controlButton" />
-            <button type="button" class="btn btn-danger controlButton" id="cancelTestAdd">Cancel</button>
-        </div>
-    }
-</div>
+@using (Html.BeginForm("CreateTest", "Admin"))
+{
+    <button type="submit" class="btn btn-primary" id="addTest">Add new test</button>
+}  
 
 <div class="allTests list-group">
+    @foreach (var test in Model)
+    {
+        <div class="singleTest list-group-item" id=@test.Guid>
+            <div class="addQuestions">
+                @using (Html.BeginForm("CreateQuestion", "Admin", new { testGuid = @test.Guid }))
+                {
+                    <button type="submit" class="btn btn-primary" id="addTest">Add new question</button>
+                }  
+            </div>
+            <h1 class="testName">@test.Name</h1>
+            <p class="description">@test.Description</p>
+            <div class="testTimeDetails">
+                <h4 class="testTimeLimit">Test time limit: @test.TestTimeLimit</h4>
+                <h4 class="questionTimeLimit">Question time limit: @test.QuestionTimeLimit</h4>
+            </div>
+            <div id="questions" class="list-group">
+                @foreach (var question in @test.Questions)
+                {
+                    <div class="singleQuestion">
+                        <div class="questionInfo list-group-item">
+                            <span>@question.Instance</span>
+                            <div class="btnParent">
+                                @using (Html.BeginForm("RemoveQuestion", "Apilike", new { questionGuid = @question.Guid}))
+                                {
+                                    <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
+                                }
+                                @using (Html.BeginForm("RemoveQuestion", "Apilike", new { questionGuid = @question.Guid}))
+                                {
+                                    <input type="submit" value="Delete" class="questionButton btnDelete" guid=@question.Guid/>
+                                }
+                            </div>
+                        </div>
+                        <div class="answers">
+                            @foreach (var answer in @question.Answers)
+                            {
+                                <div class="singleAnswer">
+                                    <div class="answerInfo list-group-item @(@answer.IsCorrect ? "correctAnswer" : "")">
+                                        <span>@answer.Instance</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts
 {
     <script type="text/javascript">
-        function showHideForm() {
-            $(".formContainer").toggle(0);
-            $(".formContainer").css('width', '24%');
-            $(".formContainer").css('margin', 'auto');
-            $("#addTest").toggle(0);
-        }
-
-        $("#addTest").click(showHideForm);
-        $("#cancelTestAdd").click(showHideForm);
-
-        $("#addQuestion").click(function() {
-            var qContainer = $('#qContainer');
-
-            var testName = $('<h1 id="testName"></h1>');
-            singleTest.append(testName);
-        });
-
-
-        $(document).ready(function () {
-            var actionUrl = '@Url.Action("GetAllTests")';
-            $.getJSON(actionUrl, processTestInfo);
-        });
-
-        function processTestInfo(data) {
-            var testParent = $('.allTests');
-            data.forEach(function (entry) {
-                console.log(entry);
-            
-                var singleTest = $('<div class="singleTest list-group-item"></div>');
-                singleTest.attr('id', entry.Guid);
-                testParent.append(singleTest);
-
-                var curTestId = '#' + entry.Guid;
-
-                var testName = $('<h1 id="testName"></h1>');
-                $(curTestId).append(testName);
-
-                var description = $('<p id="description"></p>');
-                $(curTestId).append(description);
-
-                var testTimeLimit = $('<h2 id="testTimeLimit">Test time limit: </h2>');
-                $(curTestId).append(testTimeLimit);
-
-                var questionTimeLimit = $('<h2 id="questionTimeLimit">Question time limit: </h2>');
-                $(curTestId).append(questionTimeLimit);
-
-                var questions = $('<div id="questions" class="list-group"></div>');
-                $(curTestId).append(questions);
-
-
-                $(curTestId + ' #testName').append(entry.Name);
-                $(curTestId + ' #description').append(entry.Description);
-                $(curTestId + ' #testTimeLimit').append(entry.TestTimeLimit);
-                $(curTestId + ' #questionTimeLimit').append(entry.QuestionTimeLimit);
-                var parent = $(curTestId + ' #questions');
-
-                AddQuestions(parent, entry.Questions);
-            });
-        }
-
-        function AddQuestions(questionParent, questions) {
-            var btnClassName = "questionButton";
-            questions.forEach(function (entry) {
-                var elem = $('<div class="singleQuestion"></div>');
-                var questionInfo = $('<div class="questionInfo list-group-item"></div>');
-                elem.append(questionInfo);
-                questionInfo.append('<span>' + entry.Instance + '</span>');
-
-                var btnParent = $('<div></div>');
-                btnParent.addClass('btnParent');
-
-                var btnEdit = $('<input type="button" value="Edit"/>');
-                btnEdit.addClass(btnClassName);
-                btnEdit.addClass('btnEdit');
-                btnEdit.attr("guid", entry.Guid);
-                btnParent.append(btnEdit);
-
-                var btnDelete = $('<input type="button" value="Delete"/>');
-                btnDelete.attr("guid", entry.Guid);
-                btnDelete.addClass(btnClassName);
-                btnDelete.addClass('btnDelete');
-                btnParent.append(btnDelete);
-
-                questionInfo.append(btnParent);
-
-                var answersParent = $('<div class="answers"></div>');
-                elem.append(answersParent);
-
-                entry.Answers.forEach(function(answer) {
-                    var singleAnswer = $('<div class="singleAnswer"></div>');
-
-                    answersParent.append(singleAnswer);
-
-                    var answerInfo = $('<div class="answerInfo list-group-item"></div>');
-
-                    if (answer.IsCorrect) {
-                        answerInfo.addClass('correctAnswer');
-                    }
-                    singleAnswer.append(answerInfo);
-                    answerInfo.append('<span>' + answer.Instance + '</span>');
-                });
-
-                questionParent.append(elem);
-            });
-
-            $(".btnEdit").click(function (e) {
-            });
-
-            $(".btnDelete").click(function(e) {
-                e.preventDefault(); // <------------------ stop default behaviour of button
-                var element = this;
-                $.ajax({
-                    url: "/Apilike/RemoveQuestion",
-                    type: "POST",
-                    data: JSON.stringify({ 'questionGuid': e.target.getAttribute('guid')}),
-                    dataType: "json",
-                    traditional: true,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        if (data.status == "Success") {
-                            alert("Done");
-                            $(element).closest("form").submit(); //<------------ submit form
-                        } else {
-                            alert("Error occurs on the Database level!");
-                        }
-                    },
-                    error: function () {
-                        alert("An error has occured!!!");
-                    }
-                });
-            });
-        }
+        
     </script>
 }

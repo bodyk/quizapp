@@ -39,9 +39,20 @@ namespace QuizApp.Controllers
             return View("TestManagement");
         }
 
+        public ActionResult CreateTest()
+        {
+            return View();
+        }
+
+        public ActionResult CreateQuestion(string testGuid)
+        {
+            ViewBag.testGuid = testGuid;
+            return View();
+        }
+
         public ActionResult TestManagement()
         {
-            return View(new TestViewModel());
+            return View(GetAllTests());
         }
 
         public ActionResult TestingUrlManagement()
@@ -55,10 +66,9 @@ namespace QuizApp.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllTests()
+        public List<TestViewModel> GetAllTests()
         {
-            var allTests = _getInfoService.GetAllTests().Select(t => _advancedMapper.MapTest(t)).ToList();
-            return Json(allTests, JsonRequestBehavior.AllowGet);
+            return _getInfoService.GetAllTests().Select(t => _advancedMapper.MapTest(t)).ToList();
         }
 
         [HttpGet]

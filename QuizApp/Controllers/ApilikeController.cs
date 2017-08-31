@@ -70,15 +70,20 @@ namespace QuizApp.Controllers
             return Json(questionViewModelList, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public void CreateQuestion(string testGuid, QuestionViewModel question)
+        public ActionResult CreateQuestion(string testGuid, QuestionViewModel question, List<string> dynamicField, List<bool> checks)
         {
             var testQuestion = _mapper.Map<TestQuestion>(question);
             _lowLevelTestManagementService.CreateQuestionForTest(testGuid, testQuestion);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
+
         [HttpPost]
-        public void RemoveQuestion(string testGuid, string questionGuid)
+        public ActionResult RemoveQuestion(string testGuid, string questionGuid)
         {
             _lowLevelTestManagementService.RemoveQuestion(questionGuid);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
         public void UpdateQuestion(string questionGuid, QuestionViewModel question)

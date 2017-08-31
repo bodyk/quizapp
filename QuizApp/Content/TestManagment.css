@@ -4,11 +4,19 @@
 }
 
 
-.singleQuestion {
+.questionInfo {
     display: flex;
     flex-direction: row;
+    margin: 5% 0 1% 0;
     justify-content: space-between;
+}
+
+.singleQuestion {
+    display: flex;
+    flex-direction: column;
+    background-color: lavenderblush;
     margin: 5% 0;
+    padding: 2%;
 }
 
 .btnParent {
@@ -23,6 +31,8 @@
 
 .allTests {
     margin: 5% 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .formContainer {
@@ -46,4 +56,20 @@
 #addTest {
     margin: auto;
     display: block;
+}
+
+.singleTest {
+    margin: 2% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: lightskyblue;
+}
+
+.answerInfo {
+    margin-left: 4%;
+}
+
+.correctAnswer {
+    background-color: greenyellow;
 }

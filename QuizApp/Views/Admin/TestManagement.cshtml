@@ -64,7 +64,6 @@
             <input type="submit" value="Create" class="btn btn-success controlButton" />
             <button type="button" class="btn btn-danger controlButton" id="cancelTestAdd">Cancel</button>
         </div>
-
     }
 </div>
 
@@ -99,46 +98,48 @@
 
         function processTestInfo(data) {
             var testParent = $('.allTests');
-
             data.forEach(function (entry) {
+                console.log(entry);
+            
                 var singleTest = $('<div class="singleTest list-group-item"></div>');
+                singleTest.attr('id', entry.Guid);
                 testParent.append(singleTest);
 
+                var curTestId = '#' + entry.Guid;
+
                 var testName = $('<h1 id="testName"></h1>');
-                singleTest.append(testName);
+                $(curTestId).append(testName);
 
                 var description = $('<p id="description"></p>');
-                singleTest.append(description);
+                $(curTestId).append(description);
 
                 var testTimeLimit = $('<h2 id="testTimeLimit">Test time limit: </h2>');
-                singleTest.append(testTimeLimit);
+                $(curTestId).append(testTimeLimit);
 
                 var questionTimeLimit = $('<h2 id="questionTimeLimit">Question time limit: </h2>');
-                singleTest.append(questionTimeLimit);
+                $(curTestId).append(questionTimeLimit);
 
                 var questions = $('<div id="questions" class="list-group"></div>');
-                singleTest.append(questions);
+                $(curTestId).append(questions);
 
 
-                $('#testName').append(data[0].Name);
-                $('#description').append(data[0].Description);
-                $('#testTimeLimit').append(data[0].TestTimeLimit);
-                $('#questionTimeLimit').append(data[0].QuestionTimeLimit);
-                var parent = $('#questions');
+                $(curTestId + ' #testName').append(entry.Name);
+                $(curTestId + ' #description').append(entry.Description);
+                $(curTestId + ' #testTimeLimit').append(entry.TestTimeLimit);
+                $(curTestId + ' #questionTimeLimit').append(entry.QuestionTimeLimit);
+                var parent = $(curTestId + ' #questions');
 
-                AddQuestions(parent, data[0].Questions);
+                AddQuestions(parent, entry.Questions);
             });
         }
 
         function AddQuestions(questionParent, questions) {
-            console.log(questionParent);
-            console.log(questions);
             var btnClassName = "questionButton";
             questions.forEach(function (entry) {
-                var elem = $('<a href""></a>');
-                elem.addClass("singleQuestion");
-                elem.addClass("list-group-item");
-                elem.append('<span>' + entry.Instance + '</span>');
+                var elem = $('<div class="singleQuestion"></div>');
+                var questionInfo = $('<div class="questionInfo list-group-item"></div>');
+                elem.append(questionInfo);
+                questionInfo.append('<span>' + entry.Instance + '</span>');
 
                 var btnParent = $('<div></div>');
                 btnParent.addClass('btnParent');
@@ -155,17 +156,32 @@
                 btnDelete.addClass('btnDelete');
                 btnParent.append(btnDelete);
 
-                elem.append(btnParent);
+                questionInfo.append(btnParent);
+
+                var answersParent = $('<div class="answers"></div>');
+                elem.append(answersParent);
+
+                entry.Answers.forEach(function(answer) {
+                    var singleAnswer = $('<div class="singleAnswer"></div>');
+
+                    answersParent.append(singleAnswer);
+
+                    var answerInfo = $('<div class="answerInfo list-group-item"></div>');
+
+                    if (answer.IsCorrect) {
+                        answerInfo.addClass('correctAnswer');
+                    }
+                    singleAnswer.append(answerInfo);
+                    answerInfo.append('<span>' + answer.Instance + '</span>');
+                });
 
                 questionParent.append(elem);
             });
 
             $(".btnEdit").click(function (e) {
-                console.log(e);
             });
 
             $(".btnDelete").click(function(e) {
-                console.log(e);
                 e.preventDefault(); // <------------------ stop default behaviour of button
                 var element = this;
                 $.ajax({

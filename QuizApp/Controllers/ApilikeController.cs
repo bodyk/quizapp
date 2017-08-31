@@ -91,6 +91,11 @@ namespace QuizApp.Controllers
         [HttpPost]
         public void CreateTest(TestViewModel test)
         {
+            if (test.Questions == null)
+            {
+                test.Questions = new List<QuestionViewModel>();
+            }
+
             var testFromDomain = _advancedMapper.MapTestViewModel(test);
             _highLevelTestManagementService.CreateTest(testFromDomain);
         }

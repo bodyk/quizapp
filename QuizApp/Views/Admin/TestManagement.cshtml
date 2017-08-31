@@ -1,7 +1,9 @@
-﻿@model QuizApp.ViewModel.Managing.TestViewModel
+﻿@using QuizApp.ViewModel.Managing
+@model QuizApp.ViewModel.Managing.TestViewModel
 
 @{
     ViewBag.Title = "TestManagement";
+
 }
 
 @Styles.Render("~/Content/TestManagment.css")
@@ -13,7 +15,6 @@
     {
         <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon">@Html.LabelFor(model => model.Name)</span>
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter test name here..." })
                 <span class="input-group-addon">@Html.ValidationMessageFor(model => model.Name)</span>
             </div>
@@ -21,26 +22,51 @@
         <div class="form-group">
             <div class="input-group">
                 @Html.TextAreaFor(m => m.Description, new
-                {
-                    @class = "form-control", placeholder = "Enter description here...",
-                    cols = 200
-                })
+           {
+               @class = "form-control",
+               placeholder = "Enter description here...",
+               cols = 200
+           })
             </div>
         </div>
 
-        <button type="button" class="btn btn-primary" id="addQuestion">Add Question</button>
-        
-        <div id="qContainer">
-            
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <span class="input-group-addon">Test</span>
+                            </div>
+                            <div class="col-lg-1">
+                                <input type="time" name="TestTimeLimit" placeholder="Time">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <span class="input-group-addon">Question</span>
+                            </div>
+                            <div class="col-lg-1">
+                                <input type="time" name="QuestionTimeLimit" placeholder="Time">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
         <div class="formButtons">
             <input type="submit" value="Create" class="btn btn-success controlButton" />
             <button type="button" class="btn btn-danger controlButton" id="cancelTestAdd">Cancel</button>
         </div>
-        
+
     }
-        </div>
+</div>
 
 <div class="allTests list-group">
 </div>
@@ -50,6 +76,8 @@
     <script type="text/javascript">
         function showHideForm() {
             $(".formContainer").toggle(0);
+            $(".formContainer").css('width', '24%');
+            $(".formContainer").css('margin', 'auto');
             $("#addTest").toggle(0);
         }
 
@@ -139,7 +167,7 @@
             $(".btnDelete").click(function(e) {
                 console.log(e);
                 e.preventDefault(); // <------------------ stop default behaviour of button
-                var element = this;    
+                var element = this;
                 $.ajax({
                     url: "/Apilike/RemoveQuestion",
                     type: "POST",

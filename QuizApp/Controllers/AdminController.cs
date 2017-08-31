@@ -41,7 +41,7 @@ namespace QuizApp.Controllers
 
         public ActionResult TestManagement()
         {
-            return View();
+            return View(new TestViewModel());
         }
 
         public ActionResult TestingUrlManagement()

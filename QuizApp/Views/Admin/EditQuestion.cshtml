@@ -1,14 +1,15 @@
-﻿@model QuizApp.ViewModel.Managing.QuestionViewModel
+﻿@using QuizApp.ViewModel.Managing
+@model QuizApp.ViewModel.Managing.QuestionViewModel
 
 @{
-    ViewBag.Title = "CreateQuestion";
+    ViewBag.Title = "EditQuestion";
 }
 
 @Styles.Render("~/Content/CreateQuestion.css")
 
-<h2>CreateQuestion</h2>
+<h2>EditQuestion</h2>
 
-@using (Html.BeginForm("CreateQuestion", "Apilike", new { testGuid = @ViewBag.testGuid }, FormMethod.Post)) 
+@using (Html.BeginForm(Html.BeginForm("UpdateQuestion", "Apilike", new { questionGuid = @ViewBag.questionGuid }, FormMethod.Post)))
 {
     @Html.AntiForgeryToken()
     
@@ -31,19 +32,22 @@
                 @Html.ValidationMessageFor(model => model.Hint, "", new { @class = "text-danger" })
             </div>
         </div>
-        
-        <div id="answersBlock">
-            <button type="submit" class="btn btn-primary" id="btnAddAnswer">Add answer</button>
-        
-            <div id="answers">
-            </div>
-        </div>
 
-        
+        @for (int i = 0; i < Model.Answers.Count; i++)
+        {
+            <div class="answers">
+                <div class='checkbox'>
+                    @Html.EditorFor(model => model.Answers[i], new { htmlAttributes = new { @class = "form-control" } })
+                    @*@Html.EditorFor(model => model.Answers[i], new { htmlAttributes = new { @class = "form-control" } })
+                    <input class="answerCheck" type="checkbox" name="checks" checked="@(answer.IsCorrect ? "checked" : "")"/>
+                    <input class="answerLabel" type="text" name="answers" value="@answer.Instance"/>*@
+                </div>
+            </div>
+        }
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -52,21 +56,3 @@
 <div>
     @Html.ActionLink("Back to List", "TestManagement")
 </div>
-
-@section Scripts
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var answers = $('#answers');
-            var answerId = 0;
-            $('#btnAddAnswer').click(function (e) {
-                console.log("Hello");
-                e.preventDefault();
-                var singleAnswers = $("<div class='checkbox'></div>");
-                $(singleAnswers).appendTo(answers);
-                $('<input class="answerCheck" type="checkbox" name="checks" value="' + answerId++ + '"/>').appendTo(singleAnswers);
-                $('<input class="answerLabel" type="text" name="answers" />').appendTo(singleAnswers);
-            });
-        });
-    </script>
-}

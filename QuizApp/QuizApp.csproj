@@ -368,6 +368,7 @@
     <Content Include="Views\Admin\TestingUrlManagement.cshtml" />
     <Content Include="Views\Admin\CreateTest.cshtml" />
     <Content Include="Views\Admin\CreateQuestion.cshtml" />
+    <Content Include="Views\Admin\EditQuestion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -50,6 +50,12 @@ namespace QuizApp.Controllers
             return View();
         }
 
+        public ActionResult EditQuestion(string questionGuid)
+        {
+            ViewBag.questionGuid = questionGuid;
+            return View(GetQuestion(questionGuid));
+        }
+
         public ActionResult TestManagement()
         {
             return View(GetAllTests());
@@ -69,6 +75,12 @@ namespace QuizApp.Controllers
         public List<TestViewModel> GetAllTests()
         {
             return _getInfoService.GetAllTests().Select(t => _advancedMapper.MapTest(t)).ToList();
+        }
+
+        [HttpGet]
+        public QuestionViewModel GetQuestion(string testGuid)
+        {
+            return _advancedMapper.MapTestQuestion(_getInfoService.GetQuestionByGuid(testGuid));
         }
 
         [HttpGet]

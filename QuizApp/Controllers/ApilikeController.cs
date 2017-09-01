@@ -95,10 +95,12 @@ namespace QuizApp.Controllers
             return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
-        public void UpdateQuestion(string questionGuid, QuestionViewModel question)
+        public ActionResult UpdateQuestion(string questionGuid, QuestionViewModel question)
         {
             var testQuestion = _mapper.Map<TestQuestion>(question);
             _lowLevelTestManagementService.UpdateQuestion(questionGuid, testQuestion);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
 
 

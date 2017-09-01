@@ -35,7 +35,7 @@
                         <div class="questionInfo list-group-item">
                             <span>@question.Instance</span>
                             <div class="btnParent">
-                                @using (Html.BeginForm("RemoveQuestion", "Apilike", new { questionGuid = @question.Guid}))
+                                @using (Html.BeginForm("EditQuestion", "Admin", new { questionGuid = @question.Guid}))
                                 {
                                     <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
                                 }

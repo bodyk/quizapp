@@ -4,6 +4,8 @@
     ViewBag.Title = "CreateQuestion";
 }
 
+@Styles.Render("~/Content/CreateQuestion.css")
+
 <h2>CreateQuestion</h2>
 
 @using (Html.BeginForm("CreateQuestion", "Apilike", new { testGuid = @ViewBag.testGuid }, FormMethod.Post)) 
@@ -56,11 +58,14 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var answers = $('#answers');
+            var answerId = 0;
             $('#btnAddAnswer').click(function (e) {
                 console.log("Hello");
                 e.preventDefault();
-                $('<input type="checkbox" name="checks" value="true"/><br/>').appendTo(answers);
-                $('<input type="text" name="dynamicField" /><br/>').appendTo(answers);
+                var singleAnswers = $("<div class='checkbox'></div>");
+                $(singleAnswers).appendTo(answers);
+                $('<input class="answerCheck" type="checkbox" name="checks" value="' + answerId++ + '"/><br/>').appendTo(singleAnswers);
+                $('<input class="answerLabel" type="text" name="answers" /><br/>').appendTo(singleAnswers);
             });
         });
     </script>

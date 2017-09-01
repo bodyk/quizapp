@@ -70,8 +70,17 @@ namespace QuizApp.Controllers
             return Json(questionViewModelList, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult CreateQuestion(string testGuid, QuestionViewModel question, List<string> dynamicField, List<bool> checks)
+        public ActionResult CreateQuestion(string testGuid, QuestionViewModel question, List<string> answers, List<int> checks)
         {
+            for (int i = 0; i < answers.Count; i++)
+            {
+                question.Answers.Add(new AnswerViewModel
+                {
+                    Instance = answers[i],
+                    IsCorrect = checks.Contains(i)
+                });
+            }
+
             var testQuestion = _mapper.Map<TestQuestion>(question);
             _lowLevelTestManagementService.CreateQuestionForTest(testGuid, testQuestion);
 

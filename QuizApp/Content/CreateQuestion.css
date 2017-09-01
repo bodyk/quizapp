@@ -1,0 +1,14 @@
+﻿.answerCheck, .answerLabel {
+    display: inline-block;
+}
+
+.checkbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#btnAddAnswer {
+    margin: auto;
+    display: block;
+}

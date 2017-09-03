@@ -46,11 +46,14 @@ namespace QuizApp.Controllers
 
             return Json(answerViewModelList, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
-        public void CreateAnswer(string questionGuid, AnswerViewModel answer)
+        public ActionResult CreateAnswer(string questionGuid, AnswerViewModel answer)
         {
             var testAnswer = _mapper.Map<TestAnswer>(answer);
             _lowLevelTestManagementService.CreateAnswerForQuestion(questionGuid, testAnswer);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
         public void RemoveAnswer(string answerGuid)
@@ -70,17 +73,8 @@ namespace QuizApp.Controllers
             return Json(questionViewModelList, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult CreateQuestion(string testGuid, QuestionViewModel question, List<string> answers, List<int> checks)
+        public ActionResult CreateQuestion(string testGuid, QuestionViewModel question)
         {
-            for (int i = 0; i < answers.Count; i++)
-            {
-                question.Answers.Add(new AnswerViewModel
-                {
-                    Instance = answers[i],
-                    IsCorrect = checks.Contains(i)
-                });
-            }
-
             var testQuestion = _mapper.Map<TestQuestion>(question);
             _lowLevelTestManagementService.CreateQuestionForTest(testGuid, testQuestion);
 
@@ -99,6 +93,15 @@ namespace QuizApp.Controllers
         {
             var testQuestion = _mapper.Map<TestQuestion>(question);
             _lowLevelTestManagementService.UpdateQuestion(questionGuid, testQuestion);
+
+            return RedirectToAction("TestManagement", "Admin");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateAnswer(string answerGuid, AnswerViewModel answer)
+        {
+            var testAnswer = _mapper.Map<TestAnswer>(answer);
+            _lowLevelTestManagementService.UpdateAnswer(answerGuid, testAnswer);
 
             return RedirectToAction("TestManagement", "Admin");
         }

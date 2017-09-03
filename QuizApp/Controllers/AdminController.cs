@@ -50,6 +50,19 @@ namespace QuizApp.Controllers
             return View();
         }
 
+        public ActionResult AddAnswer(string questionGuid)
+        {
+            ViewBag.questionGuid = questionGuid;
+            return View();
+        }
+
+        public ActionResult EditAnswer(string questionGuid, string answerGuid)
+        {
+            ViewBag.answerGuid = answerGuid;
+            ViewBag.questionGuid = questionGuid;
+            return View(GetAnswer(questionGuid, answerGuid));
+        }
+
         public ActionResult EditQuestion(string questionGuid)
         {
             ViewBag.questionGuid = questionGuid;
@@ -81,6 +94,12 @@ namespace QuizApp.Controllers
         public QuestionViewModel GetQuestion(string testGuid)
         {
             return _advancedMapper.MapTestQuestion(_getInfoService.GetQuestionByGuid(testGuid));
+        }
+
+        [HttpGet]
+        public AnswerViewModel GetAnswer(string questionGuid, string answerGuid)
+        {
+            return GetQuestion(questionGuid).Answers.FirstOrDefault(a => a.Guid == answerGuid);
         }
 
         [HttpGet]

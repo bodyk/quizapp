@@ -33,18 +33,6 @@
             </div>
         </div>
 
-        @for (int i = 0; i < Model.Answers.Count; i++)
-        {
-            <div class="answers">
-                <div class='checkbox'>
-                    @Html.EditorFor(model => model.Answers[i], new { htmlAttributes = new { @class = "form-control" } })
-                    @*@Html.EditorFor(model => model.Answers[i], new { htmlAttributes = new { @class = "form-control" } })
-                    <input class="answerCheck" type="checkbox" name="checks" checked="@(answer.IsCorrect ? "checked" : "")"/>
-                    <input class="answerLabel" type="text" name="answers" value="@answer.Instance"/>*@
-                </div>
-            </div>
-        }
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

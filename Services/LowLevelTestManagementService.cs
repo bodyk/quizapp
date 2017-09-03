@@ -20,6 +20,7 @@ namespace Services
 
         void CreateAnswerForQuestion(string questionGuid, TestAnswer answer);
         void RemoveAnswer(string answerGuid);
+        void UpdateAnswer(string answerGuid, TestAnswer updatedAnswer);
     }
 
     public class LowLevelLowLevelTestManagementService : ILowLevelTestManagementService
@@ -72,6 +73,18 @@ namespace Services
         public void RemoveAnswer(string answerGuid)
         {
             _answerRepository.Delete(a => a.Guid == answerGuid);
+        }
+
+        public void UpdateAnswer(string answerGuid, TestAnswer updatedAnswer)
+        {
+            //TODO refactor this logic
+            var answer = _answerRepository.Get(q => q.Guid == answerGuid);
+
+            answer.Instance = updatedAnswer.Instance;
+            answer.IsCorrect = updatedAnswer.IsCorrect;
+            //question.TestAnswers = updatedQuestion.TestAnswers;
+
+            _answerRepository.Update(answer);
         }
     }
 }

@@ -35,11 +35,15 @@
                         <div class="questionInfo list-group-item">
                             <span>@question.Instance</span>
                             <div class="btnParent">
-                                @using (Html.BeginForm("EditQuestion", "Admin", new { questionGuid = @question.Guid}))
+                                @using (Html.BeginForm("AddAnswer", "Admin", new { questionGuid = @question.Guid }))
+                                {
+                                    <input type="submit" value="Add Answer" class="questionButton btnAddAnswer" guid=@question.Guid />
+                                }
+                                @using (Html.BeginForm("EditQuestion", "Admin", new {questionGuid = @question.Guid}))
                                 {
                                     <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
                                 }
-                                @using (Html.BeginForm("RemoveQuestion", "Apilike", new { questionGuid = @question.Guid}))
+                                @using (Html.BeginForm("RemoveQuestion", "Apilike", new {questionGuid = @question.Guid}))
                                 {
                                     <input type="submit" value="Delete" class="questionButton btnDelete" guid=@question.Guid/>
                                 }
@@ -51,6 +55,16 @@
                                 <div class="singleAnswer">
                                     <div class="answerInfo list-group-item @(@answer.IsCorrect ? "correctAnswer" : "")">
                                         <span>@answer.Instance</span>
+                                        <div class="btnParent">
+                                            @using (Html.BeginForm("EditAnswer", "Admin", new {questionGuid = @question.Guid, answerGuid = @answer.Guid }))
+                                            {
+                                                <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
+                                            }
+                                            @using (Html.BeginForm("RemoveAnswer", "Apilike", new { answerGuid = @answer.Guid}))
+                                            {
+                                                <input type="submit" value="Delete" class="questionButton btnDelete" guid=@answer.Guid/>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             }

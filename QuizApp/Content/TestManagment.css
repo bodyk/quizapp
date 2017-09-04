@@ -1,4 +1,9 @@
-﻿.questions {
+﻿.testBlock {
+    display: none;
+    background-color: greenyellow;
+}
+
+.questions {
     display: flex;
     flex-direction: column;
 }

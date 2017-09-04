@@ -142,9 +142,11 @@ namespace QuizApp.Controllers
             return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
-        public void RemoveTestingUrl(string testingUrlGuid)
+        public ActionResult RemoveTestingUrl(string testingUrlGuid)
         {
             _highLevelTestManagementService.RemoveTestingUrl(testingUrlGuid);
+
+            return RedirectToAction("TestingUrlManagement", "Admin");
         }
 
 

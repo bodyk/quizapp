@@ -1,6 +1,6 @@
 ﻿namespace QuizApp.ViewModel.PassingQuiz
 {
-    class AnswerPassingViewModel
+    public class AnswerPassingViewModel
     {
         public string Instance { get; set; }
         public bool IsSelected { get; set; }

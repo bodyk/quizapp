@@ -288,6 +288,7 @@
     <Compile Include="ViewModel\QuizPassing\QuestionPassingViewModel.cs" />
     <Compile Include="ViewModel\Managing\QuestionViewModel.cs" />
     <Compile Include="ViewModel\QuizPassing\ChoicePassingViewModel.cs" />
+    <Compile Include="ViewModel\QuizPassing\TestInnerPassingViewModel.cs" />
     <Compile Include="ViewModel\QuizPassing\TestPassingViewModel.cs" />
     <Compile Include="ViewModel\Managing\TestingResultViewModel.cs" />
     <Compile Include="ViewModel\Managing\TestingUrlViewModel.cs" />
@@ -373,6 +374,7 @@
     <Content Include="Views\Admin\EditAnswer.cshtml" />
     <Content Include="Views\Admin\CreateURL.cshtml" />
     <Content Include="Views\Quiz\QuizNameForm.cshtml" />
+    <Content Include="Views\Quiz\Quiz.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

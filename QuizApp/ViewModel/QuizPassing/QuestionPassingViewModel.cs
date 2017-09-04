@@ -2,7 +2,7 @@
 
 namespace QuizApp.ViewModel.PassingQuiz
 {
-    class QuestionPassingViewModel
+    public class QuestionPassingViewModel
     {
         public string Instance { get; set; }
         public string Hint { set; get; }

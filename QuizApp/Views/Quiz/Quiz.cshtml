@@ -1,0 +1,49 @@
+﻿@model QuizApp.ViewModel.Managing.TestingUrlViewModel
+
+@{
+    ViewBag.Title = "Quiz";
+}
+
+@Styles.Render("~/Content/TestManagment.css")
+
+<button type="button" class="btn btn-primary" id="startTest">Start Test</button>
+
+
+<h1>Test Name - @Model.TestName</h1>
+<h1>Interviewee - @Model.Interviewee</h1>
+
+<div class="testBlock">
+    <h1>Question</h1>
+    <div id="questions" class="list-group">
+        @*@foreach (var question in @Model.)
+        {
+            <div class="singleQuestion">
+                <div class="questionInfo list-group-item">
+                    <span>@question.Instance</span>
+                </div>
+                <div class="answers">
+                    @foreach (var answer in @question.Answers)
+                    {
+                        <div class="singleAnswer">
+                            <div class="answerInfo list-group-item">
+                                <span>@answer.Instance</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }*@
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#startTest").click(function () {
+            console.log(this);
+            $("#startTest").hide();
+            $(".testBlock").show();
+        });
+    </script>
+}

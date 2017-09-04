@@ -16,18 +16,22 @@
     @foreach (var test in Model)
     {
         <div class="singleTest list-group-item" id=@test.Guid>
-            <div class="addQuestions">
-                @using (Html.BeginForm("CreateQuestion", "Admin", new { testGuid = @test.Guid }))
+            <div class="testButtons">
+                @using (Html.BeginForm("CreateQuestion", "Admin", new {testGuid = @test.Guid}))
                 {
-                    <button type="submit" class="btn btn-primary" id="addTest">Add new question</button>
-                }  
+                    <button type="submit" class="btn btn-primary" id="addQuestion">Add question</button>
+                }
+
+                @using (Html.BeginForm("RemoveTest", "Apilike", new {testGuid = @test.Guid}))
+                {
+                    <button type="submit" class="btn btn-danger" id="removeTest">Remove Test</button>
+                }
             </div>
+            
             <h1 class="testName">@test.Name</h1>
             <p class="description">@test.Description</p>
-            <div class="testTimeDetails">
-                <h4 class="testTimeLimit">Test time limit: @test.TestTimeLimit</h4>
-                <h4 class="questionTimeLimit">Question time limit: @test.QuestionTimeLimit</h4>
-            </div>
+            <h4 class="testTimeLimit">Test time limit: @test.TestTimeLimit</h4>
+            <h4 class="questionTimeLimit">Question time limit: @test.QuestionTimeLimit</h4>
             <div id="questions" class="list-group">
                 @foreach (var question in @test.Questions)
                 {
@@ -35,9 +39,9 @@
                         <div class="questionInfo list-group-item">
                             <span>@question.Instance</span>
                             <div class="btnParent">
-                                @using (Html.BeginForm("AddAnswer", "Admin", new { questionGuid = @question.Guid }))
+                                @using (Html.BeginForm("AddAnswer", "Admin", new {questionGuid = @question.Guid}))
                                 {
-                                    <input type="submit" value="Add Answer" class="questionButton btnAddAnswer" guid=@question.Guid />
+                                    <input type="submit" value="Add Answer" class="questionButton btnAddAnswer" guid=@question.Guid/>
                                 }
                                 @using (Html.BeginForm("EditQuestion", "Admin", new {questionGuid = @question.Guid}))
                                 {
@@ -56,11 +60,11 @@
                                     <div class="answerInfo list-group-item @(@answer.IsCorrect ? "correctAnswer" : "")">
                                         <span>@answer.Instance</span>
                                         <div class="btnParent">
-                                            @using (Html.BeginForm("EditAnswer", "Admin", new {questionGuid = @question.Guid, answerGuid = @answer.Guid }))
+                                            @using (Html.BeginForm("EditAnswer", "Admin", new {questionGuid = @question.Guid, answerGuid = @answer.Guid}))
                                             {
                                                 <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
                                             }
-                                            @using (Html.BeginForm("RemoveAnswer", "Apilike", new { answerGuid = @answer.Guid}))
+                                            @using (Html.BeginForm("RemoveAnswer", "Apilike", new {answerGuid = @answer.Guid}))
                                             {
                                                 <input type="submit" value="Delete" class="questionButton btnDelete" guid=@answer.Guid/>
                                             }

@@ -74,14 +74,9 @@
     background-color: greenyellow;
 }
 
-.testTimeDetails {
+.testButtons {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
-}
-
-.addQuestions {
-    position: absolute;
-    top: 3%;
-    right: 2%;
 }

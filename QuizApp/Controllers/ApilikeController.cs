@@ -125,9 +125,11 @@ namespace QuizApp.Controllers
             _highLevelTestManagementService.UpdateTest(testGuid, testFromDomain);
         }
         [HttpPost]
-        public void RemoveTest(string testGuid)
+        public ActionResult RemoveTest(string testGuid)
         {
             _highLevelTestManagementService.RemoveTest(testGuid);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
 
 

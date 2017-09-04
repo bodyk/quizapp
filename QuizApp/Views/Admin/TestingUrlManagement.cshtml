@@ -1,20 +1,41 @@
-﻿
+﻿@model List<QuizApp.ViewModel.Managing.TestingUrlViewModel>
+
 @{
     ViewBag.Title = "TestingUrlManagement";
 }
 
-<h2>TestingUrlManagement</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>TestName</th>
+            <th>UrlInstance</th>
+            <th>AllowedStartDate</th>
+            <th>AllowedEndDate</th>
+            <th>Interviewee</th>
+            <th>NumberOfRuns</th>
+            <th>Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var testingUrl in Model)
+        {
+            <tr>
+                <th>@testingUrl.TestName </th>
+                <th>@testingUrl.UrlInstance </th>
+                <th>@testingUrl.AllowedStartDate </th>
+                <th>@testingUrl.AllowedEndDate </th>
+                <th>@testingUrl.Interviewee </th>
+                <th>@testingUrl.NumberOfRuns </th>
+                <th>/Test/@testingUrl.Guid </th>
+            </tr>
+        }
+    </tbody>
+    
+</table>
 
 @section Scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
-            var actionUrl = '@Url.Action("GetAllTestingUrls")';
-            $.getJSON(actionUrl, processData);
-        });
-
-        function processData(data) {
-            console.log(data);
-        }
+        
     </script>
 }

@@ -44,6 +44,12 @@ namespace QuizApp.Controllers
             return View();
         }
 
+        public ActionResult CreateURL(string testGuid)
+        {
+            ViewBag.testGuid = testGuid;
+            return View();
+        }
+
         public ActionResult CreateQuestion(string testGuid)
         {
             ViewBag.testGuid = testGuid;
@@ -74,9 +80,10 @@ namespace QuizApp.Controllers
             return View(GetAllTests());
         }
 
-        public ActionResult TestingUrlManagement()
+        public ActionResult TestingUrlManagement(string testGuid)
         {
-            return View();
+            ViewBag.testGuid = testGuid;
+            return View(GetAllTestingUrls());
         }
 
         public ActionResult ResultManagement()
@@ -103,13 +110,11 @@ namespace QuizApp.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllTestingUrls()
+        public List<TestingUrlViewModel> GetAllTestingUrls()
         {
             var testingsList = _getInfoService.GetAllTestingUrls();
 
-            var parsedTestingsList = testingsList.Select(t => _advancedMapper.MapTestingUrl(t)).ToList();
-
-            return Json(parsedTestingsList, JsonRequestBehavior.AllowGet);
+            return testingsList.Select(t => _advancedMapper.MapTestingUrl(t)).ToList();
         }
 
         [HttpGet]

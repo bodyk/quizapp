@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using QuizApp.ViewModel;
+using QuizApp.ViewModel.Managing;
 using QuizApp.ViewModel.Mapping;
 using QuizApp.ViewModel.PassingQuiz;
 using Services;
@@ -28,7 +29,7 @@ namespace QuizApp.Controllers
         }
 
 
-        public ActionResult Quiz(string guid)
+        public ActionResult Quiz(string guid, string interviewee)
         {
             var testUrlDomain = _getInfoService.GetTestingUrlByGuid(guid);
             var error = _advancedLogicService.CheckTestingUrlForAvailability(testUrlDomain);
@@ -36,8 +37,17 @@ namespace QuizApp.Controllers
             {
                 return View("TestingErrorView", (object)error);
             }
+            
             //if all is ok
             var testUrl = _advancedMapper.MapTestingUrl(testUrlDomain);
+            if (!string.IsNullOrEmpty(interviewee))
+            {
+                testUrl.Interviewee = interviewee;
+            }
+            if (string.IsNullOrEmpty(testUrl.Interviewee))
+            {
+                return View("QuizNameForm", model: testUrl);
+            }
             return View(testUrl);
         }
 

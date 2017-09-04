@@ -21,6 +21,10 @@
                 {
                     <button type="submit" class="btn btn-primary" id="addQuestion">Add question</button>
                 }
+                @using (Html.BeginForm("CreateURL", "Admin", new { testGuid = @test.Guid }))
+                {
+                    <button type="submit" class="btn btn-primary" id="createURL">Create URL</button>
+                }
 
                 @using (Html.BeginForm("RemoveTest", "Apilike", new {testGuid = @test.Guid}))
                 {

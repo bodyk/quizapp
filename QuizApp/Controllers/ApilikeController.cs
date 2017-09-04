@@ -134,10 +134,12 @@ namespace QuizApp.Controllers
 
 
         [HttpPost]
-        public void CreateTestingUrl(TestingUrlViewModel testingUrl)
+        public ActionResult CreateTestingUrl(TestingUrlViewModel testingUrl)
         {
             var testUrlDomain = _advancedMapper.MapTestingUrlViewModel(testingUrl);
             _highLevelTestManagementService.CreateTestingUrl(testUrlDomain);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
         public void RemoveTestingUrl(string testingUrlGuid)

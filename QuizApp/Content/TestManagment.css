@@ -1,6 +1,5 @@
-﻿.testBlock {
+﻿.testBlock, #finishQuiz {
     display: none;
-    background-color: greenyellow;
 }
 
 .questions {
@@ -19,7 +18,7 @@
 .singleQuestion {
     display: flex;
     flex-direction: column;
-    background-color: lavenderblush;
+    background-color: limegreen;
     margin: 2% 0;
     padding: 2%;
 }

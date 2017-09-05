@@ -10,40 +10,113 @@
 
 
 <h1>Test Name - @Model.TestName</h1>
-<h1>Interviewee - @Model.Interviewee</h1>
+<h2>Interviewee - @Model.Interviewee</h2>
 
 <div class="testBlock">
-    <h1>Question</h1>
-    <div id="questions" class="list-group">
-        @*@foreach (var question in @Model.)
-        {
-            <div class="singleQuestion">
-                <div class="questionInfo list-group-item">
-                    <span>@question.Instance</span>
-                </div>
-                <div class="answers">
-                    @foreach (var answer in @question.Answers)
-                    {
-                        <div class="singleAnswer">
-                            <div class="answerInfo list-group-item">
-                                <span>@answer.Instance</span>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        }*@
+    
+    @using (Html.BeginForm("FinishTest", "Quiz", FormMethod.Post, new { id = "finishQuizForm" }))
+    {
+        <input type="hidden" name="TestingGuid" value = @Model.Guid />
+        <input type="hidden" name="Interviewee" value = @Model.Interviewee />
+        <input type="hidden" name="QuestionTried" value = @Model.NumberOfRuns />
+        <input type="hidden" name="TestingStartDateTime" />
+        <input type="hidden" name="TestingEndDateTime" />
+        <input type="hidden" name="Duration" />
 
-    </div>
+        <div id="questions" class="list-group" guid="@Model.Guid">
+
+        </div>
+        <button type="button" class="btn btn-primary" id="nextQuestion">Next</button>
+        <button type="submit" class="btn btn-primary" id="finishQuiz">Finish</button>
+    }
+
+    
 </div>
-
 @section Scripts
 {
     <script type="text/javascript">
-        $("#startTest").click(function () {
-            console.log(this);
+        $("#startTest").click(function() {
             $("#startTest").hide();
             $(".testBlock").show();
+            InitQuestions();
         });
+        var _allQuestions;
+        var _currentQuestionIndex = 0;
+        var _prevQuestionBlock;
+        var _questionParent = $("#questions");
+        var _curQuestionName = 'Questions[' + _currentQuestionIndex + ']';
+
+
+        function InitQuestions() {
+            $.ajax({
+                url: '/Quiz/GetInfoAndStartTest',
+                type: 'GET',
+                data: {
+                    'testingUrlGuid': _questionParent.attr('guid')
+                },
+                success: function(data) {
+                    _allQuestions = data;
+                    _questionParent.append(GetNextQuestion());
+                    _currentQuestionIndex++;
+                }
+            });
+        }
+
+        $('#nextQuestion').click(function () {
+            _prevQuestionBlock.hide();
+            if (_currentQuestionIndex < _allQuestions.Questions.length) {
+                _questionParent.append(GetNextQuestion());
+                _currentQuestionIndex++;
+            } else {
+                $('#finishQuiz').show();
+                $('#nextQuestion').hide();
+            }
+        });
+
+        $(document).on('submit', 'form', function (e) {
+            $("input:checked").each(function () {
+                var answerGuid = $(this).attr('answerGuid');
+                var answerId = $(this).attr('answerId');
+                var questionIndex = $(this).attr('questionIndex');
+
+                _curQuestionName = 'Questions[' + questionIndex + ']';
+                var hiddenInfo = $('<input type="hidden" name="' + _curQuestionName + '.AnswersSelected[' + answerId + ']" value = "' + answerGuid + '"/>');
+                $(this).after(hiddenInfo);
+                console.log($(this));
+
+            });
+            return true;
+        });
+
+        function GetNextQuestion() {
+
+            var nextQuestion = _allQuestions.Questions[_currentQuestionIndex];
+
+            var answers = $('<div class="answers"></div>');
+            _allQuestions.Questions[_currentQuestionIndex].Answers.forEach(function (item, i) {
+
+                var curQuestionGuid = _allQuestions.Questions[_currentQuestionIndex].Guid;
+                _curQuestionName = 'Questions[' + _currentQuestionIndex + ']';
+
+                var singleAnswer = $('<div class="singleAnswer"></div>');
+                answers.append(singleAnswer);
+                var answerInfo = $('<div class="answerInfo list-group-item"></div>');
+                singleAnswer.append(answerInfo);
+                var checkBox =
+                    $('<input type="checkbox"    name="' + _curQuestionName + '.QuestionGuid" value="' + curQuestionGuid + '"/>');
+                checkBox.attr('answerGuid', item.Guid);
+                checkBox.attr('answerId', i);
+                checkBox.attr('questionIndex', _currentQuestionIndex);
+                answerInfo.append(checkBox);
+
+                answerInfo.append('<span>' + item.Instance + '</span>');
+            });
+            var singleQuestion = $('<div class="singleQuestion"></div>');
+            var questionInfo = $('<div class="questionInfo list-group-item"></div>');
+            singleQuestion.append(questionInfo);
+            _prevQuestionBlock = singleQuestion;
+            questionInfo.append('<span>' + nextQuestion.Instance + '</span>');
+            return singleQuestion.append(answers);
+        }
     </script>
 }

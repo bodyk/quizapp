@@ -8,7 +8,6 @@ using QuizApp.ViewModel;
 using QuizApp.ViewModel.Managing;
 using QuizApp.ViewModel.Mapping;
 using QuizApp.ViewModel.PassingQuiz;
-using QuizApp.ViewModel.QuizPassing;
 using Services;
 
 namespace QuizApp.Controllers
@@ -64,7 +63,7 @@ namespace QuizApp.Controllers
 
             var attepmtGuid = Guid.NewGuid().ToString();
 
-            var test = new TestInnerPassingViewModel
+            var test = new
             {
                 TestTimeLimit = domainTest.TestTimeLimit ?? new TimeSpan(),
                 QuestionTimeLimit = domainTest.QuestionTimeLimit ?? new TimeSpan(),

@@ -288,7 +288,6 @@
     <Compile Include="ViewModel\QuizPassing\QuestionPassingViewModel.cs" />
     <Compile Include="ViewModel\Managing\QuestionViewModel.cs" />
     <Compile Include="ViewModel\QuizPassing\ChoicePassingViewModel.cs" />
-    <Compile Include="ViewModel\QuizPassing\TestInnerPassingViewModel.cs" />
     <Compile Include="ViewModel\QuizPassing\TestPassingViewModel.cs" />
     <Compile Include="ViewModel\Managing\TestingResultViewModel.cs" />
     <Compile Include="ViewModel\Managing\TestingUrlViewModel.cs" />

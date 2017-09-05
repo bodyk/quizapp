@@ -21,7 +21,6 @@
         <input type="hidden" name="QuestionTried" value = @Model.NumberOfRuns />
         <input type="hidden" name="TestingStartDateTime" />
         <input type="hidden" name="TestingEndDateTime" />
-        <input type="hidden" name="Duration" />
 
         <div id="questions" class="list-group" guid="@Model.Guid">
 
@@ -35,9 +34,12 @@
 @section Scripts
 {
     <script type="text/javascript">
-        $("#startTest").click(function() {
+        $("#startTest").click(function () {
             $("#startTest").hide();
             $(".testBlock").show();
+            //08/29/2017 15:48:29
+
+            $("input[name='TestingStartDateTime']").attr('value', getTime());
             InitQuestions();
         });
         var _allQuestions;
@@ -46,6 +48,17 @@
         var _questionParent = $("#questions");
         var _curQuestionName = 'Questions[' + _currentQuestionIndex + ']';
 
+        function getTime() {
+            var currentdate = new Date();
+            var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+            return datetime;
+        }
 
         function InitQuestions() {
             $.ajax({
@@ -85,6 +98,7 @@
                 console.log($(this));
 
             });
+            $("input[name='TestingEndDateTime']").attr('value', getTime());
             return true;
         });
 

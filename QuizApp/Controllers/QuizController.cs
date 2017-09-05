@@ -77,10 +77,12 @@ namespace QuizApp.Controllers
         }
 
         [HttpPost]
-        public void FinishTest(TestPassingViewModel testPassing)
+        public ActionResult FinishTest(TestPassingViewModel testPassing)
         {
             var testPassingMapped = _advancedMapper.MapTestPassingViewModel(testPassing);
             _advancedLogicService.FinishQuiz(testPassingMapped);
+
+            return View();
         }
     }
 }

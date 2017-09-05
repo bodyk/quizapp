@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,11 +73,20 @@ namespace Services
                 testTimeLimit = TimeSpan.FromTicks(questionTimeLimit.Value.Ticks * test.TestQuestions.Count);
             }
 
-            DateTime startTime;
-            if (!_startedQuizzes.TryRemove(result.AttemptGuid, out startTime))
+            DateTime startTime = DateTime.Now;
+
+            try
             {
-                return false;
+                if (!_startedQuizzes.TryRemove(result.AttemptGuid, out startTime))
+                {
+                    return false;
+                }
             }
+            catch (Exception)
+            {
+            }
+
+            
             var actualTime = DateTime.Now - startTime;
 
             return actualTime < (testTimeLimit + TimeSpan.FromSeconds(10));

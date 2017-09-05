@@ -374,6 +374,7 @@
     <Content Include="Views\Admin\CreateURL.cshtml" />
     <Content Include="Views\Quiz\QuizNameForm.cshtml" />
     <Content Include="Views\Quiz\Quiz.cshtml" />
+    <Content Include="Views\Quiz\FinishTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

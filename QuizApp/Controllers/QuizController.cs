@@ -79,7 +79,6 @@ namespace QuizApp.Controllers
         [HttpPost]
         public ActionResult FinishTest(TestPassingViewModel testPassing)
         {
-            var data = Request.Form;
             var testPassingMapped = _advancedMapper.MapTestPassingViewModel(testPassing);
             _advancedLogicService.FinishQuiz(testPassingMapped);
 

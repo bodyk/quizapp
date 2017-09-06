@@ -36,7 +36,7 @@
             <p class="description">@test.Description</p>
             <h4 class="testTimeLimit">Test time limit: @test.TestTimeLimit</h4>
             <h4 class="questionTimeLimit">Question time limit: @test.QuestionTimeLimit</h4>
-            <div id="questions" class="list-group">
+            <div class="list-group questions">
                 @foreach (var question in @test.Questions)
                 {
                     <div class="singleQuestion">
@@ -45,15 +45,15 @@
                             <div class="btnParent">
                                 @using (Html.BeginForm("AddAnswer", "Admin", new {questionGuid = @question.Guid}))
                                 {
-                                    <input type="submit" value="Add Answer" class="questionButton btnAddAnswer" guid=@question.Guid/>
+                                    <input type="submit" value="Add Answer" class="questionButton btn btn-success btnAddAnswer" guid=@question.Guid/>
                                 }
                                 @using (Html.BeginForm("EditQuestion", "Admin", new {questionGuid = @question.Guid}))
                                 {
-                                    <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
+                                    <input type="submit" value="Edit" class="questionButton btn btn-warning btnEdit" guid=@question.Guid/>
                                 }
                                 @using (Html.BeginForm("RemoveQuestion", "Apilike", new {questionGuid = @question.Guid}))
                                 {
-                                    <input type="submit" value="Delete" class="questionButton btnDelete" guid=@question.Guid/>
+                                    <input type="submit" value="Delete" class="questionButton btn btn-danger btnDelete" guid=@question.Guid/>
                                 }
                             </div>
                         </div>
@@ -66,11 +66,11 @@
                                         <div class="btnParent">
                                             @using (Html.BeginForm("EditAnswer", "Admin", new {questionGuid = @question.Guid, answerGuid = @answer.Guid}))
                                             {
-                                                <input type="submit" value="Edit" class="questionButton btnEdit" guid=@question.Guid/>
+                                                <input type="submit" value="Edit" class="questionButton btn btn-warning btnEdit" guid=@question.Guid/>
                                             }
                                             @using (Html.BeginForm("RemoveAnswer", "Apilike", new {answerGuid = @answer.Guid}))
                                             {
-                                                <input type="submit" value="Delete" class="questionButton btnDelete" guid=@answer.Guid/>
+                                                <input type="submit" value="Delete" class="questionButton btn btn-danger btnDelete" guid=@answer.Guid/>
                                             }
                                         </div>
                                     </div>
@@ -88,6 +88,6 @@
 @section Scripts
 {
     <script type="text/javascript">
-        
+
     </script>
 }

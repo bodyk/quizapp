@@ -4,6 +4,8 @@
     ViewBag.Title = "TestingUrlManagement";
 }
 
+@Styles.Render("~/Content/TestManagment.css")
+
 <table class="table">
     <thead>
         <tr>
@@ -29,9 +31,9 @@
                 <th>@testingUrl.NumberOfRuns </th>
                 <th>/Test/@testingUrl.Guid </th>
                 <th>
-                    @using (Html.BeginForm("RemoveTestingUrl", "Apilike", new { testingUrlGuid = testingUrl.Guid}))
+                    @using (Html.BeginForm("RemoveTestingUrl", "Apilike", new { testingUrlGuid = @testingUrl.Guid}))
                     {
-                        <input type="submit" value="Delete" class="questionButton btnDelete" guid=testingUrl.Guid/>
+                        <input type="submit" value="Delete" class="questionButton btn btn-danger btnDelete" guid=testingUrl.Guid/>
                     }
                 </th>
 

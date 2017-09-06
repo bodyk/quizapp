@@ -1,21 +1,52 @@
-﻿@model string
+﻿@model List<QuizApp.ViewModel.Managing.TestingResultViewModel>
 
 @{
     ViewBag.Title = "ResultManagement";
 }
 
+@Styles.Render("~/Content/TestManagment.css")
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>TestName</th>
+        <th>Interviewee</th>
+        <th>Duration</th>
+        <th>QuestionTried</th>
+        <th>Score</th>
+        <th>IsValid</th>
+        <th>TestingStartDateTime</th>
+        <th>TestingEndDateTime</th>
+        <th>TotalQuestions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var testingUrl in Model)
+    {
+        <tr>
+            <th>@testingUrl.TestName </th>
+            <th>@testingUrl.Interviewee </th>
+            <th>@testingUrl.Duration </th>
+            <th>@testingUrl.QuestionTried </th>
+            <th>@testingUrl.Score </th>
+            <th>@testingUrl.IsValid </th>
+            <th>@testingUrl.TestingStartDateTime </th>
+            <th>@testingUrl.TestingEndDateTime </th>
+            <th>@testingUrl.TotalQuestions </th>
+            <th>
+                @using (Html.BeginForm("RemoveTestingResult", "Apilike", new { testingResultGuid = @testingUrl.Guid}))
+                {
+                    <input type="submit" value="Delete" class="questionButton btn btn-danger btnDelete" guid=testingUrl.Guid/>
+                }
+            </th>
+
+        </tr>
+    }
+    </tbody>
+</table>
+
 @section Scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
-            var actionUrl = '@Url.Action("GetAllTestingResults")';
-            $.getJSON(actionUrl, processData);
-        });
-
-        function processData(data) {
-            console.log(data);
-        }
     </script>
 }
-
-<h2>ResultManagement</h2>

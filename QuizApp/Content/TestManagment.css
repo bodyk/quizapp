@@ -5,6 +5,7 @@
 .questions {
     display: flex;
     flex-direction: column;
+    width: auto;
 }
 
 
@@ -19,12 +20,12 @@
     display: flex;
     flex-direction: column;
     background-color: limegreen;
-    margin: 2% 0;
-    padding: 2%;
+    margin: 20px 0;
+    padding: 20px;
 }
 
 .btnParent {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     justify-content: space-between;
 }
@@ -71,6 +72,8 @@
 }
 
 .answerInfo {
+    display: flex;
+    justify-content: space-between;
     margin-left: 4%;
 }
 
@@ -79,5 +82,9 @@
 }
 
 .testButtons {
-    display: inline-block;
+    display: flex;
+}
+
+.btn {
+    margin: 2px;
 }

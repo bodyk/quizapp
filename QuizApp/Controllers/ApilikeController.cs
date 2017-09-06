@@ -56,9 +56,11 @@ namespace QuizApp.Controllers
             return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
-        public void RemoveAnswer(string answerGuid)
+        public ActionResult RemoveAnswer(string answerGuid)
         {
             _lowLevelTestManagementService.RemoveAnswer(answerGuid);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
 
         [HttpGet]
@@ -151,9 +153,11 @@ namespace QuizApp.Controllers
 
 
         [HttpPost]
-        public void RemoveTestingResult(string testingResultGuid)
+        public ActionResult RemoveTestingResult(string testingResultGuid)
         {
             _highLevelTestManagementService.RemoveTestingResult(testingResultGuid);
+
+            return RedirectToAction("ResultManagement", "Admin");
         }
     }
 }

@@ -88,7 +88,7 @@ namespace QuizApp.Controllers
 
         public ActionResult ResultManagement()
         {
-            return View();
+            return View(GetAllTestingResults());
         }
 
         [HttpGet]
@@ -118,13 +118,13 @@ namespace QuizApp.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllTestingResults()
+        public List<TestingResultViewModel> GetAllTestingResults()
         {
            var allResults =
                 _getInfoService.GetAllTestingResults()
                     .Select(r => _mapper.Map<TestingResultViewModel>(r))
                     .ToList();
-            return Json(allResults, JsonRequestBehavior.AllowGet);
+            return allResults;
         }
 
         public void GetResultsForTestCsv(string testGuid)

@@ -72,6 +72,8 @@ namespace QuizApp
             bundles.Add(new ScriptBundle("~/bundles/material-bootstrap-js").Include(
                       "~/Content/bootstrap-material/material.min.js",
                       "~/Content/bootstrap-material/ripples.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Quiz").Include("~/Scripts/Site/Quiz.js"));
         }
     }
 }

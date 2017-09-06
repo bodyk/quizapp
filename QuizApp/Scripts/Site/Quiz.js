@@ -74,8 +74,17 @@ $(document).on('submit', 'form', function (e) {
     return true;
 });
 
-$("#questions").on("click", ".answerInfo", function () {
-    $(this).find('input').prop('checked', true);
+$("#questions").on("click", ".answerInfo", function (e) {
+    var target = $(event.target);
+    
+    if (target.is("input"))
+        return;
+    var elem = $(this).find('input');
+    if (elem.attr('type') === 'radio') {
+        elem.prop('checked', true);
+    } else {
+        elem.prop('checked', !elem.is(":checked"));
+    }
 });
 
 function GetNextQuestion() {

@@ -110,7 +110,7 @@ namespace QuizApp.Controllers
 
 
         [HttpPost]
-        public void CreateTest(TestViewModel test)
+        public ActionResult CreateTest(TestViewModel test)
         {
             if (test.Questions == null)
             {
@@ -119,6 +119,8 @@ namespace QuizApp.Controllers
 
             var testFromDomain = _advancedMapper.MapTestViewModel(test);
             _highLevelTestManagementService.CreateTest(testFromDomain);
+
+            return RedirectToAction("TestManagement", "Admin");
         }
         [HttpPost]
         public void UpdateTest(string testGuid, TestViewModel test)

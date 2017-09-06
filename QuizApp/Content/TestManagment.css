@@ -75,6 +75,11 @@
     display: flex;
     justify-content: space-between;
     margin-left: 4%;
+    cursor: pointer;
+}
+
+input {
+    cursor: pointer;
 }
 
 .correctAnswer {

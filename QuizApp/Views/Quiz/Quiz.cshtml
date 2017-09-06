@@ -6,11 +6,10 @@
 
 @Styles.Render("~/Content/TestManagment.css")
 
-<button type="button" class="btn btn-primary" id="startTest">Start Test</button>
-
-
 <h1>Test Name - @Model.TestName</h1>
 <h2>Interviewee - @Model.Interviewee</h2>
+
+<button type="button" class="btn btn-primary" id="startTest">Start Test</button>
 
 <div class="testBlock">
     
@@ -42,6 +41,7 @@
             $("input[name='TestingStartDateTime']").attr('value', getTime());
             InitQuestions();
         });
+
         var _allQuestions;
         var _currentQuestionIndex = 0;
         var _prevQuestionBlock;
@@ -86,24 +86,37 @@
             }
         });
 
+        var questionToAnswerIndexDict = {};
+
         $(document).on('submit', 'form', function (e) {
             $("input:checked").each(function () {
                 var answerGuid = $(this).attr('answerGuid');
-                var answerId = $(this).attr('answerId');
+                var questionGuid = $(this).attr('value');
+                var bMultiple = $(this).attr('bMultiple') === 'true';
+                var answerId = (bMultiple ? $(this).attr('answerId') : 0);
+
                 var questionIndex = $(this).attr('questionIndex');
 
                 _curQuestionName = 'Questions[' + questionIndex + ']';
-                var hiddenInfo = $('<input type="hidden" name="' + _curQuestionName + '.AnswersSelected[' + answerId + ']" value = "' + answerGuid + '"/>');
-                $(this).after(hiddenInfo);
-                console.log($(this));
+
+                if (questionToAnswerIndexDict[questionGuid] == undefined) {
+                    questionToAnswerIndexDict[questionGuid] = 0;
+                } else {
+                    questionToAnswerIndexDict[questionGuid]++;
+                }
+                var hiddenInfo = $('<input type="hidden" name="' + _curQuestionName + '.AnswersSelected[' + questionToAnswerIndexDict[questionGuid] + ']" value = "' + answerGuid + '"/>');
+                $('#questions').after(hiddenInfo);
 
             });
             $("input[name='TestingEndDateTime']").attr('value', getTime());
             return true;
         });
 
-        function GetNextQuestion() {
+        $("#questions").on("click", ".answerInfo", function(){
+            $(this).find('input').prop('checked', true);
+        });
 
+        function GetNextQuestion() {
             var nextQuestion = _allQuestions.Questions[_currentQuestionIndex];
 
             var answers = $('<div class="answers"></div>');
@@ -116,12 +129,20 @@
                 answers.append(singleAnswer);
                 var answerInfo = $('<div class="answerInfo list-group-item"></div>');
                 singleAnswer.append(answerInfo);
-                var checkBox =
-                    $('<input type="checkbox"    name="' + _curQuestionName + '.QuestionGuid" value="' + curQuestionGuid + '"/>');
-                checkBox.attr('answerGuid', item.Guid);
-                checkBox.attr('answerId', i);
-                checkBox.attr('questionIndex', _currentQuestionIndex);
-                answerInfo.append(checkBox);
+
+                var selectingType = "radio";
+                var bMultiple = _allQuestions.Questions[_currentQuestionIndex].Multiple;
+                if (bMultiple) {
+                    selectingType = "checkbox";
+                }
+
+                var selectAnswerElem =
+                    $('<input type="'+selectingType+'"    name="' + _curQuestionName + '.QuestionGuid" value="' + curQuestionGuid + '"/>');
+                selectAnswerElem.attr('answerGuid', item.Guid);
+                selectAnswerElem.attr('answerId', i);
+                selectAnswerElem.attr('bMultiple', bMultiple);
+                selectAnswerElem.attr('questionIndex', _currentQuestionIndex);
+                answerInfo.append(selectAnswerElem);
 
                 answerInfo.append('<span>' + item.Instance + '</span>');
             });
@@ -130,7 +151,9 @@
             singleQuestion.append(questionInfo);
             _prevQuestionBlock = singleQuestion;
             questionInfo.append('<span>' + nextQuestion.Instance + '</span>');
+
             return singleQuestion.append(answers);
         }
+        
     </script>
 }
